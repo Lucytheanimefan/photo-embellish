@@ -1,9 +1,20 @@
-#myImage{
-	position: absolute;
-	z-index: -1;
+#myImage {
+    position: absolute;
+    z-index: -1;
 }
 
+.input-group-addon {}
 
-.colorpicker-component{
-	width: 30%;
+.colorpicker-component {}
+
+#cp2 {
+    width: 100%;
+}
+
+.colorpicker {
+    width: 20%;
+}
+
+.nav li:hover {
+    cursor: pointer;
 }

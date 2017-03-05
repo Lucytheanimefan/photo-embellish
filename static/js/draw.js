@@ -3,9 +3,13 @@ var clickX = new Array();
 var clickY = new Array();
 var clickDrag = new Array();
 var colors = new Array();
+var strokeWidth = new Array();
 var paint;
 
 colors.push($('#cp2').colorpicker('getValue'));
+strokeWidth.push(parseInt($("#strokeWidth").val()));
+
+
 //list of lines created
 var lines = new Array();
 
@@ -20,6 +24,7 @@ function addClick(x, y, dragging) {
     clickY.push(y);
     clickDrag.push(dragging);
     colors.push($('#cp2').colorpicker('getValue'));
+    strokeWidth.push(parseInt($("#strokeWidth").val()));
 }
 
 /**
@@ -55,6 +60,7 @@ $('#myCanvas').mouseleave(function(e) {
 });
 
 function setLine(i) {
+    context.lineWidth = strokeWidth[i];
     if (colors[i] != null) {
         context.strokeStyle = colors[i];
     } else {
@@ -76,7 +82,6 @@ function redraw() {
     console.log(colors);
     context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
     context.lineJoin = "round";
-    context.lineWidth = 5;
 
     for (var i = 0; i < clickX.length; i++) {
         setLine(i);

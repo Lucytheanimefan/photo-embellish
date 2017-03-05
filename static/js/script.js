@@ -1,5 +1,6 @@
 //get uploaded photo
 $("#fileChooser").change(function(e) {
+    $("#myImage").remove();
 
     for (var i = 0; i < e.originalEvent.srcElement.files.length; i++) {
 

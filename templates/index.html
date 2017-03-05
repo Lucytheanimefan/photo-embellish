@@ -14,16 +14,19 @@
                         </li>
                     </ul>
                 </li>
-                <li class="active"><a onclick="clearCanvas(true)">Clear</a></li>
+                <li><a onclick="clearCanvas(true)">Clear</a></li>
                 <li><a id="animate">Animate</a></li>
                 <li><a><i id="zoomIn" class="fa fa-plus" aria-hidden="false"></i></a></li>
                 <li><a><i id="zoomOut" class="fa fa-minus" aria-hidden="false"></i></a></li>
-                <li>
-                    <div id="cp2" class="input-group colorpicker-component">
-                        <input type="text" value="#00AABB" class="form-control" />
-                        <span class="input-group-addon"><i></i></span>
-                    </div>
+                <li class = "colorpicker">
+                    <a>
+                        <div id="cp2" class="input-group colorpicker-component">
+                            <input type="text" value="#00AABB" class="form-control" />
+                            <span class="input-group-addon"><i></i></span>
+                        </div>
+                    </a>
                 </li>
+                <li><a><input class="form-control" id = "strokeWidth" value ="12" placeholder = "stroke width" type="number" min="0" step="1" /></a></li>
             </ul>
         </div>
     </div>
