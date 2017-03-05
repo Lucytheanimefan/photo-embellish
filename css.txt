@@ -1,0 +1,1 @@
+#myImage{position:absolute;z-index:-1}#cp2{width:100%}.colorpicker{width:20%}.nav li:hover{cursor:pointer}

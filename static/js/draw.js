@@ -79,7 +79,6 @@ function setLine(i) {
 
 
 function redraw() {
-    console.log(colors);
     context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
     context.lineJoin = "round";
 

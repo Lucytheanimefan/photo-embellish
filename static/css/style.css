@@ -3,18 +3,4 @@
     z-index: -1;
 }
 
-.input-group-addon {}
 
-.colorpicker-component {}
-
-#cp2 {
-    width: 100%;
-}
-
-.colorpicker {
-    width: 20%;
-}
-
-.nav li:hover {
-    cursor: pointer;
-}
