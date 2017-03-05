@@ -22,6 +22,27 @@ $("#fileChooser").change(function(e) {
     }
 });
 
+$("#download").click(function() {
+    $.ajax({
+        type: 'POST',
+        url: '/create_files',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'text',
+        success: function(msg, status, jqXHR) {
+            console.log(msg);
+            console.log("Success")
+
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert(textStatus, errorThrown);
+        }
+    });
+})
+
+function generateFiles() {
+
+}
+
 var currentZoom = 1;
 $("#zoomIn").click(function() {
     currentZoom += 0.1;
@@ -42,7 +63,7 @@ $("#zoomOut").click(function() {
 
 $("#animate").click(function() {
     animate();
-})
+});
 
 $(function() {
     $('#cp2').colorpicker();

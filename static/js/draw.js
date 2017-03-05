@@ -104,34 +104,32 @@ function setStrokeColor(color) {
     context.strokeStyle = color;
 }
 
-function clearCanvas(reset = false) {
+function clearCanvas(reset) {
     if (reset) {
-        clickX = new Array()
-        clickY = new Array()
-        clickDrag = new Array()
+        clickX = new Array();
+        clickY = new Array();
+        clickDrag = new Array();
     }
-    context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
+    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+
 }
 
 
 function animate() {
-    console.log("IN animate");
-    clearCanvas();
-    animateLines()
+    clearCanvas(false);
+    animateLines();
 }
 
 var lineCount = 1;
 
 function animateLines() {
-    console.log("Animate lines")
-    i = lineCount
+    i = lineCount;
     setLine(i);
     lineCount += 1;
 
     if (i > clickX.length) {
-        console.log("terminate");
         cancelAnimationFrame(requestID);
     } else {
-        requestID = requestAnimationFrame(animateLines)
+        requestID = requestAnimationFrame(animateLines);
     }
 }

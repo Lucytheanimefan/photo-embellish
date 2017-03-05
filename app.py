@@ -2,11 +2,14 @@ from flask import Flask, render_template,send_from_directory, jsonify
 import os 
 import os.path
 from slimit import minify
+from csscompressor import compress
 import requests
+import glob
 
 app = Flask(__name__)
 
-MAIN_URL = "https://photo-embellish.herokuapp.com"
+SITE_URL = "https://photo-embellish.herokuapp.com/"
+
 
 @app.route("/")
 def main():
@@ -23,18 +26,36 @@ def css_file(file):
     #do your code here
     return send_from_directory(app.static_folder, file)
 
+@app.route('/create_files', methods=['POST'])
+def create_files():
+	print "CREATE FILES"
+	#css_files = glob.glob("static/css/*.css")
+	#js_files = glob.glob("static/js/*.js")
+	min_css=write_to_file(minify_text("static/css/style.css", "css"),"css")
+	min_js = write_to_file(minify_text("static/js/draw.js", "js"),"js")
+	return "done :)"
 
+	
+def write_to_file(content, file_name):
+	with open(file_name+".txt", "w+") as text_file:
+		text_file.write(content)
 
-def minify_text():
+def minify_text(filepath, file_type):
 	url = os.path.realpath('.')
-	text = requests.get(MAIN_URL+"/static/js/script.js")
-	print minify(text)
-
+	text = requests.get(SITE_URL+filepath).content
+	if file_type is "js":
+		print text
+		minified = minify(text)
+	elif file_type is "css":
+		minified = compress(text)
+	print "MINIFIED"
+	print minified
+	return minified
 
 
 
 if __name__ == "__main__":
-	#minify_text()
+	#minify_text("static/js/draw.js", "js")
 	port = int(os.environ.get("PORT", 5000))
 	app.run(host='0.0.0.0', port=port)
 	
