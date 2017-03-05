@@ -1,33 +1,29 @@
 {% block css %}
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='plugins/bootstrap-colorpicker.min.css') }}"> 
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='plugins/font-awesome.min.css') }}"> 
-{% endblock %} 
-
-{% extends "layout.html" %} {% block body %}
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='plugins/bootstrap-colorpicker.min.css') }}">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='plugins/font-awesome.min.css') }}"> {% endblock %} {% extends "layout.html" %} {% block body %}
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <!--todo-->
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                
                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">File<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><input id="fileChooser" type="file"></li>
+                        <li>
+                            <input id="fileChooser" type="file">
+                        </li>
                     </ul>
                 </li>
                 <li class="active"><a onclick="clearCanvas(true)">Clear</a></li>
                 <li><a id="animate">Animate</a></li>
+                <li><a><i id="zoomIn" class="fa fa-plus" aria-hidden="false"></i></a></li>
+                <li><a><i id="zoomOut" class="fa fa-minus" aria-hidden="false"></i></a></li>
                 <li>
                     <div id="cp2" class="input-group colorpicker-component">
                         <input type="text" value="#00AABB" class="form-control" />
                         <span class="input-group-addon"><i></i></span>
                     </div>
                 </li>
-                <!--
-                 <li><i id = "zoomIn" class="fa fa-plus" aria-hidden="false"></i></li>
-                 <li><i id = "zoomOut" class="fa fa-minus" aria-hidden="false"></i></li>-->
             </ul>
         </div>
     </div>

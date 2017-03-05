@@ -2,8 +2,10 @@ var context = document.getElementById('myCanvas').getContext("2d");
 var clickX = new Array();
 var clickY = new Array();
 var clickDrag = new Array();
+var colors = new Array();
 var paint;
 
+colors.push($('#cp2').colorpicker('getValue'));
 //list of lines created
 var lines = new Array();
 
@@ -12,11 +14,12 @@ var requestAnimationFrame = window.requestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
     window.msRequestAnimationFrame;
 
-//save the click position
+//save the click position and other data
 function addClick(x, y, dragging) {
     clickX.push(x);
     clickY.push(y);
     clickDrag.push(dragging);
+    colors.push($('#cp2').colorpicker('getValue'));
 }
 
 /**
@@ -51,24 +54,32 @@ $('#myCanvas').mouseleave(function(e) {
     paint = false;
 });
 
+function setLine(i) {
+    if (colors[i] != null) {
+        context.strokeStyle = colors[i];
+    } else {
+        context.strokeStyle = $('#cp2').colorpicker('getValue');
+    }
+    context.beginPath();
+    if (clickDrag[i] && i) {
+        context.moveTo(clickX[i - 1], clickY[i - 1]);
+    } else {
+        context.moveTo(clickX[i] - 1, clickY[i]);
+    }
+    context.lineTo(clickX[i], clickY[i]);
+    context.closePath();
+    context.stroke();
+}
+
 
 function redraw() {
+    console.log(colors);
     context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
-
-    context.strokeStyle = "#df4b26";
     context.lineJoin = "round";
     context.lineWidth = 5;
 
     for (var i = 0; i < clickX.length; i++) {
-        context.beginPath();
-        if (clickDrag[i] && i) {
-            context.moveTo(clickX[i - 1], clickY[i - 1]);
-        } else {
-            context.moveTo(clickX[i] - 1, clickY[i]);
-        }
-        context.lineTo(clickX[i], clickY[i]);
-        context.closePath();
-        context.stroke();
+        setLine(i);
     }
 }
 
@@ -109,13 +120,7 @@ var lineCount = 1;
 function animateLines() {
     console.log("Animate lines")
     i = lineCount
-    if (clickDrag[i]) {
-        context.beginPath();
-        context.moveTo(clickX[i - 1], clickY[i - 1]);
-        context.lineTo(clickX[i], clickY[i]);
-        context.closePath();
-        context.stroke();
-    }
+    setLine(i);
     lineCount += 1;
 
     if (i > clickX.length) {

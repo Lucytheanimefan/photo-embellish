@@ -32,7 +32,7 @@ $("#zoomIn").click(function() {
 
 var currentZoom = 1;
 $("#zoomOut").click(function() {
-    currentZoom += 0.1;
+    currentZoom -= 0.1;
     $('#myImage, #myCanvas').css({
         zoom: currentZoom,
         '-moz-transform': 'scale(' + currentZoom + ')'
@@ -45,5 +45,5 @@ $("#animate").click(function() {
 
 $(function() {
     $('#cp2').colorpicker();
-    console.log($('#cp2').colorpicker('getValue'));
+    //console.log($('#cp2').colorpicker('getValue'));
 });
