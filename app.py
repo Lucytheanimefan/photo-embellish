@@ -49,12 +49,9 @@ def minify_text(filepath, file_type):
 	url = os.path.realpath('.')
 	text = requests.get(SITE_URL+filepath).content
 	if file_type is "js":
-		#print text
 		minified = minify(text)
 	elif file_type is "css":
 		minified = compress(text)
-	#print "MINIFIED"
-	#print minified
 	return minified
 
 
