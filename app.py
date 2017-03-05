@@ -60,7 +60,7 @@ def minify_text(filepath, file_type):
 
 
 if __name__ == "__main__":
-	minify_text("static/js/draw.js", "js")
+	#minify_text("static/js/draw.js", "js")
 	port = int(os.environ.get("PORT", 5000))
 	app.run(host='0.0.0.0', port=port)
 	
