@@ -4,6 +4,7 @@ var clickY = new Array();
 var clickDrag = new Array();
 var colors = new Array();
 var strokeWidth = new Array();
+var opacity = new Array();
 var paint;
 
 colors.push($('#cp2').colorpicker('getValue'));
