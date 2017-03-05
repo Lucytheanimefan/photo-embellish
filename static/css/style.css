@@ -1,0 +1,9 @@
+#myImage{
+	position: absolute;
+	z-index: -1;
+}
+
+
+.colorpicker-component{
+	width: 30%;
+}
