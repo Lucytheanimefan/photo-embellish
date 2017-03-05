@@ -42,25 +42,25 @@ def create_files():
 
 	
 def write_to_file(content, file_name):
-	with open("/static/"+file_name+".txt", "w+") as text_file:
+	with open("static/"+file_name+".txt", "w+") as text_file:
 		text_file.write(content)
 
 def minify_text(filepath, file_type):
 	url = os.path.realpath('.')
 	text = requests.get(SITE_URL+filepath).content
 	if file_type is "js":
-		print text
+		#print text
 		minified = minify(text)
 	elif file_type is "css":
 		minified = compress(text)
-	print "MINIFIED"
-	print minified
+	#print "MINIFIED"
+	#print minified
 	return minified
 
 
 
 if __name__ == "__main__":
 	#minify_text("static/js/draw.js", "js")
-	port = int(os.environ.get("PORT", 5000))
+	port = int(os.environ.get("PORT", 4000))
 	app.run(host='0.0.0.0', port=port)
 	
