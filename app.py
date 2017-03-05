@@ -26,6 +26,11 @@ def css_file(file):
     #do your code here
     return send_from_directory(app.static_folder, file)
 
+@app.route('/<file>', methods=['GET','POST'])
+def code_file(file):
+    #do your code here
+    return send_from_directory(app.static_folder, file)
+
 @app.route('/create_files', methods=['POST'])
 def create_files():
 	print "CREATE FILES"
@@ -37,7 +42,7 @@ def create_files():
 
 	
 def write_to_file(content, file_name):
-	with open(file_name+".txt", "w+") as text_file:
+	with open("/static/"+file_name+".txt", "w+") as text_file:
 		text_file.write(content)
 
 def minify_text(filepath, file_type):
@@ -55,7 +60,7 @@ def minify_text(filepath, file_type):
 
 
 if __name__ == "__main__":
-	#minify_text("static/js/draw.js", "js")
+	minify_text("static/js/draw.js", "js")
 	port = int(os.environ.get("PORT", 5000))
 	app.run(host='0.0.0.0', port=port)
 	
