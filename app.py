@@ -27,14 +27,14 @@ def css_file(file):
 
 def minify_text():
 	url = os.path.realpath('.')
-	text = requests.get(MAIN_URL+"/static/js/script/js")
+	text = requests.get(MAIN_URL+"/static/js/script.js")
 	print minify(text)
 
 
 
 
 if __name__ == "__main__":
-	minify_text()
+	#minify_text()
 	port = int(os.environ.get("PORT", 5000))
 	app.run(host='0.0.0.0', port=port)
 	
