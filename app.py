@@ -1,4 +1,4 @@
-from flask import Flask, render_template,send_from_directory, jsonify
+from flask import Flask, render_template,send_from_directory, jsonify, request
 import os 
 import os.path
 from slimit import minify
@@ -10,6 +10,7 @@ app = Flask(__name__)
 
 SITE_URL = "https://photo-embellish.herokuapp.com/"
 
+js_values = ""
 
 @app.route("/")
 def main():
@@ -37,11 +38,23 @@ def create_files():
 	#css_files = glob.glob("static/css/*.css")
 	#js_files = glob.glob("static/js/*.js")
 	min_css=write_to_file(minify_text("static/css/style.css", "css"),"css")
-	min_js = write_to_file(minify_text("static/js/draw.js", "js"),"js")
+	min_js = write_to_file(js_values + minify_text("static/js/user.js", "js")+"animate();","js")
 	return "done :)"
 
+@app.route("/record_values", methods=["POST"])
+def record_values():
+	dat = request.data
+	#print "THIS IS THE DATA"
+	#print dat
+	set_js_values(dat)
+	return "Done"
+
+def set_js_values(vals):
+	js_values = vals;
 	
 def write_to_file(content, file_name):
+	print "CONTENT WRITTEN TO FILE: "
+	print content
 	with open("static/"+file_name+".txt", "w+") as text_file:
 		text_file.write(content)
 

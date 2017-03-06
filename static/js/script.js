@@ -32,8 +32,10 @@ function downloadHTML() {
 }
 
 function generateHTML() {
-    var html = myImage.outerHTML + "<canvas id='myCanvas'>"; //NEED TO SET SIZE OF CANVAS!
-    console.log(html);
+    var header = '<head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Photo Embellisher</title><link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"><link rel=stylesheet type=text/css href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"}}"><link rel=stylesheet type=text/css href="style.css" }}"></head>'
+    var footer = '<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script><script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" }}"></script><script type="text/javascript" src="script.js" }}"></script>';
+    var html = header + "<body>" + myImage.outerHTML + "<canvas id='myCanvas'></body>" + footer + "</body>"; //NEED TO SET SIZE OF CANVAS!
+    //console.log(html);
     return html;
 }
 
@@ -49,8 +51,28 @@ function download(filename, text) {
 
     document.body.removeChild(element);
 }
+var zip;
 
+function downloadZip() {
+    sendData();
+    zip = new JSZip();
+    zip.file("index.html", generateHTML());
+    saveTextFromPage();
 
+}
+
+function saveTextFromPage() {
+    $.get("/js.txt", function(data) {
+        zip.file("script.js", data);
+        $.get("/css.txt", function(data) {
+            zip.file("style.css", data);
+            zip.generateAsync({ type: "blob" })
+                .then(function(blob) {
+                    saveAs(blob, "photo-embellish.zip");
+                });
+        });
+    });
+}
 var currentZoom = 1;
 $("#zoomIn").click(function() {
     currentZoom += 0.1;

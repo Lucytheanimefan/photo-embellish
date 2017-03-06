@@ -10,7 +10,6 @@ var paint;
 colors.push($('#cp2').colorpicker('getValue'));
 strokeWidth.push(parseInt($("#strokeWidth").val()));
 opacity.push(parseFloat($("#opacity").val()));
-
 //list of lines created
 var lines = new Array();
 
@@ -19,6 +18,30 @@ var requestAnimationFrame = window.requestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
     window.msRequestAnimationFrame;
 
+
+function sendData() {
+    var clickXString = "clickX = [" + clickX.toString() + "];";
+    var clickYString = "clickY = [" + clickY.toString() + "];";
+    var clickDragString = "clickDrag = [" + clickDrag.toString() + "];";
+    var colorsString = "colors = [" + colors.toString() + "];";
+    var strokeWidthString = "strokeWidth = [" + strokeWidth.toString() + "];";
+    var opacityString = "opacity = [" + opacity.toString() + "];";
+
+    $.ajax({
+        type: 'POST',
+        url: '/record_values',
+        data: clickXString+clickYString+clickDragString+colorsString+strokeWidthString+opacityString,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'text',
+        success: function(msg, status, jqXHR) {
+            console.log(msg);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert(textStatus, errorThrown);
+        }
+    });
+
+}
 //save the click position and other data
 function addClick(x, y, dragging) {
     clickX.push(x);
@@ -92,22 +115,6 @@ function redraw() {
     for (var i = 0; i < clickX.length; i++) {
         setLine(i);
     }
-}
-
-/**
- * [setLineWidth description]
- * @param {int} width [description]
- */
-function setLineWidth(width) {
-    context.lineWidth = width;
-}
-
-/**
- * [setStrokeColor description]
- * @param {String} color Hex value
- */
-function setStrokeColor(color) {
-    context.strokeStyle = color;
 }
 
 function clearCanvas(reset) {

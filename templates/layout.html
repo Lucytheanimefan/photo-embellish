@@ -15,6 +15,7 @@
 </head>
 
 <body>
+
     <body>
         <div class="container-fluid">
             <nav class="navbar navbar-default">
@@ -34,27 +35,36 @@
                             <li><a id="animate"><i class="fa fa-play" aria-hidden="true"></i><br>Animate</a></li>
                             <li><a><i id="zoomIn" class="fa fa-plus" aria-hidden="false"></i></a></li>
                             <li><a><i id="zoomOut" class="fa fa-minus" aria-hidden="false"></i></a></li>
-                            <li class="colorpicker">
-                                <a>
-                                    <div id="cp2" class="input-group colorpicker-component">
-                                        <input type="text" value="#00AABB" class="form-control" />
-                                        <span class="input-group-addon"><i></i></span>
-                                    </div>
-                                </a>
+                            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-paint-brush" aria-hidden="true"></i><span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li class="colorpicker">
+                                        <a>
+                                            <div id="cp2" class="input-group colorpicker-component">
+                                                <input type="text" value="#00AABB" class="form-control" />
+                                                <span class="input-group-addon"><i></i></span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <label for="opacity">Opacity</label>
+                                            <input class="form-control" id="opacity" value="0.5" placeholder="opacity" type="number" max="1" min="0" step="0.1" />
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <label for="strokeWidth">Stroke Width</label>
+                                            <input class="form-control" id="strokeWidth" value="12" placeholder="stroke width" type="number" min="0" step="1" />
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
-                            <li>
-                                <a>
-                                    <input class="form-control" id="opacity" value="0.5" placeholder="opacity" type="number" max="1" min="0" step="0.1" />
-                                </a>
-                            </li>
-                            <li>
-                                <a>
-                                    <input class="form-control" id="strokeWidth" value="12" placeholder="stroke width" type="number" min="0" step="1" />
-                                </a>
-                            </li>
+                            <li><a onclick="downloadZip()">Download zip</a></li>
+                            <!--
                             <li><a href="/css.txt" download="style.css" id="downloadcss">Download CSS</a></li>
                             <li><a href="/js.txt" download="script.js" id="downloadjs">Download js</a></li>
                             <li><a onclick="downloadHTML()" download="index.html" id="downloadhtml">Download HTML</a></li>
+                            -->
                         </ul>
                     </div>
                 </div>
@@ -65,6 +75,8 @@
     <script type="text/javascript" src="{{ url_for('static', filename='plugins/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='plugins/bootstrap-colorpicker.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='plugins/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='plugins/FileSaver.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='plugins/jszip.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
     {% block scripts %} {% endblock %}
 </body>
