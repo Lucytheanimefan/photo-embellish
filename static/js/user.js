@@ -1,3 +1,4 @@
+var context = document.getElementById('myCanvas').getContext("2d");
 var requestAnimationFrame = window.requestAnimationFrame ||
     window.mozRequestAnimationFrame ||
     window.webkitRequestAnimationFrame ||

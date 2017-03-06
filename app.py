@@ -35,6 +35,8 @@ def code_file(file):
 @app.route('/create_files', methods=['POST'])
 def create_files():
 	print "CREATE FILES"
+	print "js_values? in createfiles"
+	print js_values
 	#css_files = glob.glob("static/css/*.css")
 	#js_files = glob.glob("static/js/*.js")
 	min_css=write_to_file(minify_text("static/css/style.css", "css"),"css")
@@ -47,9 +49,12 @@ def record_values():
 	#print "THIS IS THE DATA"
 	#print dat
 	set_js_values(dat)
+	print "js values in record values"
+	print js_values
 	return "Done"
 
 def set_js_values(vals):
+	global js_values
 	js_values = vals;
 	
 def write_to_file(content, file_name):
