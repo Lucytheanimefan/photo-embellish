@@ -9,7 +9,7 @@ var paint;
 
 colors.push($('#cp2').colorpicker('getValue'));
 strokeWidth.push(parseInt($("#strokeWidth").val()));
-
+opacity.push(parseFloat($("#opacity").val()));
 
 //list of lines created
 var lines = new Array();
@@ -21,11 +21,13 @@ var requestAnimationFrame = window.requestAnimationFrame ||
 
 //save the click position and other data
 function addClick(x, y, dragging) {
+    console.log(opacity)
     clickX.push(x);
     clickY.push(y);
     clickDrag.push(dragging);
     colors.push($('#cp2').colorpicker('getValue'));
     strokeWidth.push(parseInt($("#strokeWidth").val()));
+    opacity.push(parseFloat($("#opacity").val()));
 }
 
 /**
@@ -66,6 +68,11 @@ function setLine(i) {
         context.strokeStyle = colors[i];
     } else {
         context.strokeStyle = $('#cp2').colorpicker('getValue');
+    }
+    if (opacity[i] != null) {
+        context.globalAlpha = opacity[i];
+    } else {
+        context.globalAlpha = parseFloat($("#opacity").val());
     }
     context.beginPath();
     if (clickDrag[i] && i) {
