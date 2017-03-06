@@ -21,7 +21,6 @@ var requestAnimationFrame = window.requestAnimationFrame ||
 
 //save the click position and other data
 function addClick(x, y, dragging) {
-    console.log(opacity)
     clickX.push(x);
     clickY.push(y);
     clickDrag.push(dragging);
