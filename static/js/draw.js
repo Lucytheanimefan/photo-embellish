@@ -1,18 +1,18 @@
 var context = document.getElementById('myCanvas').getContext("2d");
-var clickX1 = new Array();
-var clickY1 = new Array();
+var clickX = new Array();
+var clickY = new Array();
 var clickDrag = new Array();
-var colors1 = new Array();
-var strokeWidth1 = new Array();
-var opacity1 = new Array();
+var colors = new Array();
+var strokeWidth = new Array();
+var opacity = new Array();
 var simultaneousAnim = {};
 var paint;
 var currentAnim = null;
 
 var simultaneous = $('#simultaneous').prop('checked');
-colors1.push($('#cp2').colorpicker('getValue'));
-strokeWidth1.push(parseInt($("#strokeWidth").val()));
-opacity1.push(parseFloat($("#opacity").val()));
+colors.push($('#cp2').colorpicker('getValue'));
+strokeWidth.push(parseInt($("#strokeWidth").val()));
+opacity.push(parseFloat($("#opacity").val()));
 //list of lines created
 var lines = new Array();
 
@@ -73,12 +73,12 @@ function addClick(x, y, dragging, i = 1) {
 
         console.log(simultaneousAnim);
     } else {
-        window["clickX" + i].push(x);
-        window["clickY" + i].push(y);
+        clickX.push(x);
+        clickY.push(y);
         clickDrag.push(dragging);
-        window["colors" + i].push($('#cp2').colorpicker('getValue'));
-        window["strokeWidth" + i].push(parseInt($("#strokeWidth").val()));
-        window["opacity" + i].push(parseFloat($("#opacity").val()));
+        colors.push($('#cp2').colorpicker('getValue'));
+        strokeWidth.push(parseInt($("#strokeWidth").val()));
+        opacity.push(parseFloat($("#opacity").val()));
     }
 }
 
@@ -151,24 +151,24 @@ function setLine(i, anim_num = 1) {
         context.stroke();
 
     } else {
-        context.lineWidth = window["strokeWidth" + j][i];
-        if (window["colors" + j][i] != null) {
-            context.strokeStyle = window["colors" + j][i];
+        context.lineWidth = strokeWidth[i];
+        if (colors[i] != null) {
+            context.strokeStyle = colors[i];
         } else {
             context.strokeStyle = $('#cp2').colorpicker('getValue');
         }
-        if (window["opacity" + j][i] != null) {
-            context.globalAlpha = window["opacity" + j][i];
+        if (opacity[i] != null) {
+            context.globalAlpha = opacity[i];
         } else {
             context.globalAlpha = parseFloat($("#opacity").val());
         }
         context.beginPath();
         if (clickDrag[i] && i) {
-            context.moveTo(window["clickX" + j][i - 1], window["clickY" + j][i - 1]);
+            context.moveTo(clickX[i - 1], clickY[i - 1]);
         } else {
-            context.moveTo(window["clickX" + j][i] - 1, window["clickY" + j][i]);
+            context.moveTo(clickX[i] - 1, clickY[i]);
         }
-        context.lineTo(window["clickX" + j][i], window["clickY" + j][i]);
+        context.lineTo(clickX[i], clickY[i]);
         context.closePath();
         context.stroke();
     }
@@ -183,7 +183,7 @@ function redraw(anim_count = 1) {
 
     if (j == 1) {
 
-        for (var i = 0; i < window["clickX" + j].length; i++) {
+        for (var i = 0; i < clickX.length; i++) {
             setLine(i);
         }
     } else {
@@ -195,12 +195,12 @@ function redraw(anim_count = 1) {
 
 function clearCanvas(reset = false) {
     if (reset) {
-        clickX1 = new Array();
-        clickY1 = new Array();
+        clickX = new Array();
+        clickY = new Array();
         clickDrag = new Array();
-        colors1 = new Array();
-        strokeWidth1 = new Array();
-        opacity1 = new Array();
+        colors = new Array();
+        strokeWidth = new Array();
+        opacity = new Array();
         //simultaneous = new Array();
     }
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
@@ -225,7 +225,7 @@ function animateLines(anim_count = 1) {
 
     if (anim_count == 1) {
 
-        if (i > window["clickX" + j].length) {
+        if (i > clickX.length) {
             cancelAnimationFrame(requestID);
         } else {
             requestID = requestAnimationFrame(function() {
@@ -234,9 +234,9 @@ function animateLines(anim_count = 1) {
         }
     } else {
         if (i > simultaneousAnim[currentAnim]["clickX"].length) {
-            cancelAnimationFrame(requestID);
+            cancelAnimationFrame(window["requestID"+j]);
         } else {
-            requestID = requestAnimationFrame(function() {
+            window["requestID"+j] = requestAnimationFrame(function() {
                 animateLines(anim_count);
             });
         }
