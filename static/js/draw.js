@@ -1,18 +1,18 @@
 var context = document.getElementById('myCanvas').getContext("2d");
-var clickX = new Array();
-var clickY = new Array();
+var clickX1 = new Array();
+var clickY1 = new Array();
 var clickDrag = new Array();
-var colors = new Array();
-var strokeWidth = new Array();
-var opacity = new Array();
-var simultaneous = new Array();
+var colors1 = new Array();
+var strokeWidth1 = new Array();
+var opacity1 = new Array();
+var simultaneousAnim = {};
 var paint;
+var currentAnim = null;
 
-
-simultaneous.push($('#simultaneous').prop('checked'));
-colors.push($('#cp2').colorpicker('getValue'));
-strokeWidth.push(parseInt($("#strokeWidth").val()));
-opacity.push(parseFloat($("#opacity").val()));
+var simultaneous = $('#simultaneous').prop('checked');
+colors1.push($('#cp2').colorpicker('getValue'));
+strokeWidth1.push(parseInt($("#strokeWidth").val()));
+opacity1.push(parseFloat($("#opacity").val()));
 //list of lines created
 var lines = new Array();
 
@@ -29,34 +29,57 @@ function simultaneousOptions() {
     detectChange("#simult_anim_num", function(data) {
         $(".simult_anim").remove();
         for (var i = 0; i < data; i++) {
-            $("label[for='simult_anim_num']").append('<div class = "simult_anim" class="checkbox">'+
-                                                '<label><input onclick="currentAnimation(this)" type="checkbox" id = "simult_anim" value="1">Animation '+i+'</label></div>')
+            $("label[for='simult_anim_num']").append('<div class = "simult_anim" class="checkbox">' +
+                '<label><input class = "simult_an_box" onclick="currentAnimation(' + i + ')" type="checkbox" id = "simult_anim' + i + '" value="1">Animation ' + i + '</label></div>');
+
+            simultaneousAnim["animation_" + i] = {};
         }
     });
 }
 
-function currentAnimation(divElement){
-    console.log("currentAnimation clicked")
-    $(divElement).prevAll().parent().addClass("disabled");
+function currentAnimation(divCount) {
+    var id = "#simult_anim" + divCount;
+    console.log("currentAnimation clicked");
+    if ($(id).prop('checked')) {
+        $(".simult_an_box:not(" + id + ")").attr("disabled", "");
+
+        currentAnim = "animation_" + divCount;
+        simultaneousAnim[currentAnim] = { "clickX": [], "clickY": [], "colors": [], "strokeWidth": [], "opacity": [], "clickDrag": [] };
+
+    } else {
+        $(".simult_an_box").removeAttr("disabled");
+        currentAnim = null;
+    }
+
 }
 
 function detectChange(divID, callback) {
     $(divID).bind('keyup input change', function() {
         var data = parseInt($(this).val());
         callback(data);
-    })
+    });
 }
 
 //save the click position and other data
-function addClick(x, y, dragging) {
-    clickX.push(x);
-    clickY.push(y);
-    clickDrag.push(dragging);
-    colors.push($('#cp2').colorpicker('getValue'));
-    strokeWidth.push(parseInt($("#strokeWidth").val()));
-    opacity.push(parseFloat($("#opacity").val()));
-    simultaneous.push($('#simultaneous').prop('checked'));
-    console.log(simultaneous);
+function addClick(x, y, dragging, i = 1) {
+    if (currentAnim != null) {
+        simultaneousAnim[currentAnim]["in_use"] = true;
+        simultaneousAnim[currentAnim]["clickX"].push(x);
+        simultaneousAnim[currentAnim]["clickY"].push(y);
+        simultaneousAnim[currentAnim]["colors"].push($('#cp2').colorpicker('getValue'));
+        simultaneousAnim[currentAnim]["strokeWidth"].push(parseInt($("#strokeWidth").val()));
+        simultaneousAnim[currentAnim]["opacity"].push(parseFloat($("#opacity").val()));
+        simultaneousAnim[currentAnim]["clickDrag"].push(dragging);
+
+        console.log(simultaneousAnim);
+    } else {
+        window["clickX" + i].push(x);
+        window["clickY" + i].push(y);
+        clickDrag.push(dragging);
+        window["colors" + i].push($('#cp2').colorpicker('getValue'));
+        window["strokeWidth" + i].push(parseInt($("#strokeWidth").val()));
+        window["opacity" + i].push(parseFloat($("#opacity").val()));
+    }
 }
 
 /**
@@ -70,6 +93,9 @@ $('#myCanvas').mousedown(function(e) {
     paint = true;
     addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
     redraw();
+    if (currentAnim != null) {
+        redraw(0);
+    }
 });
 
 
@@ -78,6 +104,9 @@ $('#myCanvas').mousemove(function(e) {
     if (paint) {
         addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
         redraw();
+        if (currentAnim != null) {
+            redraw(0);
+        }
     }
 });
 
@@ -91,44 +120,88 @@ $('#myCanvas').mouseleave(function(e) {
     paint = false;
 });
 
-function setLine(i) {
-    context.lineWidth = strokeWidth[i];
-    if (colors[i] != null) {
-        context.strokeStyle = colors[i];
+/**
+ * [setLine description]
+ * @param {[type]} i        [description]
+ * @param {Number} anim_num [description]
+ */
+function setLine(i, anim_num = 1) {
+    var j = anim_num;
+    var currentAnim = "animation_" + j;
+    if (j != 1) {
+        context.lineWidth = simultaneousAnim[currentAnim]["strokeWidth"][i];
+        if (simultaneousAnim[currentAnim]["colors"][i] != null) {
+            context.strokeStyle = simultaneousAnim[currentAnim]["colors"][i]; // window["colors" + j][i];
+        } else {
+            context.strokeStyle = $('#cp2').colorpicker('getValue');
+        }
+        if (simultaneousAnim[currentAnim]["opacity"][i] != null) {
+            context.globalAlpha = simultaneousAnim[currentAnim]["opacity"][i];
+        } else {
+            context.globalAlpha = parseFloat($("#opacity").val());
+        }
+        context.beginPath();
+        if (clickDrag[i] && i) {
+            context.moveTo(simultaneousAnim[currentAnim]["clickX"][i - 1], simultaneousAnim[currentAnim]["clickY"][i - 1]);
+        } else {
+            context.moveTo(simultaneousAnim[currentAnim]["clickX"][i] - 1, simultaneousAnim[currentAnim]["clickY"][i]);
+        }
+        context.lineTo(simultaneousAnim[currentAnim]["clickX"][i], simultaneousAnim[currentAnim]["clickY"][i]);
+        context.closePath();
+        context.stroke();
+
     } else {
-        context.strokeStyle = $('#cp2').colorpicker('getValue');
+        context.lineWidth = window["strokeWidth" + j][i];
+        if (window["colors" + j][i] != null) {
+            context.strokeStyle = window["colors" + j][i];
+        } else {
+            context.strokeStyle = $('#cp2').colorpicker('getValue');
+        }
+        if (window["opacity" + j][i] != null) {
+            context.globalAlpha = window["opacity" + j][i];
+        } else {
+            context.globalAlpha = parseFloat($("#opacity").val());
+        }
+        context.beginPath();
+        if (clickDrag[i] && i) {
+            context.moveTo(window["clickX" + j][i - 1], window["clickY" + j][i - 1]);
+        } else {
+            context.moveTo(window["clickX" + j][i] - 1, window["clickY" + j][i]);
+        }
+        context.lineTo(window["clickX" + j][i], window["clickY" + j][i]);
+        context.closePath();
+        context.stroke();
     }
-    if (opacity[i] != null) {
-        context.globalAlpha = opacity[i];
-    } else {
-        context.globalAlpha = parseFloat($("#opacity").val());
-    }
-    context.beginPath();
-    if (clickDrag[i] && i) {
-        context.moveTo(clickX[i - 1], clickY[i - 1]);
-    } else {
-        context.moveTo(clickX[i] - 1, clickY[i]);
-    }
-    context.lineTo(clickX[i], clickY[i]);
-    context.closePath();
-    context.stroke();
 }
 
 
-function redraw() {
+function redraw(anim_count = 1) {
+    var j = anim_count;
+    var currentAnim = "animation_" + j;
     context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
     context.lineJoin = "round";
 
-    for (var i = 0; i < clickX.length; i++) {
-        setLine(i);
+    if (j == 1) {
+
+        for (var i = 0; i < window["clickX" + j].length; i++) {
+            setLine(i);
+        }
+    } else {
+        for (var i = 0; i < simultaneousAnim[currentAnim]["clickX"].length; i++) {
+            setLine(i, j);
+        }
     }
 }
 
-function clearCanvas(reset) {
+function clearCanvas(reset = false) {
     if (reset) {
-        clickX = new Array();
-        clickY = new Array();
+        clickX1 = new Array();
+        clickY1 = new Array();
         clickDrag = new Array();
+        colors1 = new Array();
+        strokeWidth1 = new Array();
+        opacity1 = new Array();
+        //simultaneous = new Array();
     }
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
@@ -136,20 +209,36 @@ function clearCanvas(reset) {
 
 
 function animate() {
-    clearCanvas(false);
+    clearCanvas();
     animateLines();
+    animateLines(0);
 }
 
 var lineCount = 1;
 
-function animateLines() {
+function animateLines(anim_count = 1) {
+    var j = anim_count;
+    var currentAnim = "animation_" + j;
     i = lineCount;
-    setLine(i);
+    setLine(i, anim_count);
     lineCount += 1;
 
-    if (i > clickX.length) {
-        cancelAnimationFrame(requestID);
+    if (anim_count == 1) {
+
+        if (i > window["clickX" + j].length) {
+            cancelAnimationFrame(requestID);
+        } else {
+            requestID = requestAnimationFrame(function() {
+                animateLines(anim_count);
+            });
+        }
     } else {
-        requestID = requestAnimationFrame(animateLines);
+        if (i > simultaneousAnim[currentAnim]["clickX"].length) {
+            cancelAnimationFrame(requestID);
+        } else {
+            requestID = requestAnimationFrame(function() {
+                animateLines(anim_count);
+            });
+        }
     }
 }
