@@ -36,6 +36,7 @@ function simultaneousOptions() {
 }
 
 function currentAnimation(divElement){
+    console.log("currentAnimation clicked")
     $(divElement).prevAll().parent().addClass("disabled");
 }
 
