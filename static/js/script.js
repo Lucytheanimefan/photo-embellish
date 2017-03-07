@@ -98,8 +98,8 @@ function updateFiles() {
         success: function(response, status, jqXHR) {
             var json = JSON.stringify(eval("(" + response + ")"));
             console.log(json)
-            var data = JSON.parse(response);
-            data = response["result"];
+            var data = eval("(" + json + ")");
+            data = data["result"];
             console.log(data);
             downloadZip(data);
 
