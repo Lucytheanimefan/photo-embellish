@@ -5,8 +5,11 @@ var clickDrag = new Array();
 var colors = new Array();
 var strokeWidth = new Array();
 var opacity = new Array();
+var simultaneous = new Array();
 var paint;
 
+
+simultaneous.push($('#simultaneous').prop('checked'));
 colors.push($('#cp2').colorpicker('getValue'));
 strokeWidth.push(parseInt($("#strokeWidth").val()));
 opacity.push(parseFloat($("#opacity").val()));
@@ -18,6 +21,30 @@ var requestAnimationFrame = window.requestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
     window.msRequestAnimationFrame;
 
+function simultaneousOptions() {
+    if ($('#simultaneous').prop('checked')) {
+        console.log("INSERT AFTER");
+        $("#simult").append('<label for = "simult_anim_num">Number of simultaneous animations<input class="form-control" id="simult_anim_num" value="0" placeholder="Number of simultaneous animations" type="number" min="0" step="1" /></label>');
+    }
+    detectChange("#simult_anim_num", function(data) {
+        $(".simult_anim").remove();
+        for (var i = 0; i < data; i++) {
+            $("label[for='simult_anim_num']").append('<div class = "simult_anim" class="checkbox">'+
+                                                '<label><input onclick="currentAnimation(this)" type="checkbox" id = "simult_anim" value="1">Animation '+i+'</label></div>')
+        }
+    });
+}
+
+function currentAnimation(divElement){
+    $(divElement).prevAll().parent().addClass("disabled");
+}
+
+function detectChange(divID, callback) {
+    $(divID).bind('keyup input change', function() {
+        var data = parseInt($(this).val());
+        callback(data);
+    })
+}
 
 //save the click position and other data
 function addClick(x, y, dragging) {
@@ -27,6 +54,8 @@ function addClick(x, y, dragging) {
     colors.push($('#cp2').colorpicker('getValue'));
     strokeWidth.push(parseInt($("#strokeWidth").val()));
     opacity.push(parseFloat($("#opacity").val()));
+    simultaneous.push($('#simultaneous').prop('checked'));
+    console.log(simultaneous);
 }
 
 /**

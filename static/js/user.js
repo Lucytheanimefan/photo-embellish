@@ -12,11 +12,11 @@ var requestAnimationFrame = window.requestAnimationFrame ||
 
 function setLine(i) {
     context.lineWidth = strokeWidth[i];
-    if (colors[i] != null) {
-        context.strokeStyle = colors[i];
-    } else {
-        context.strokeStyle = $('#cp2').colorpicker('getValue');
-    }
+    //if (colors[i] != null) {
+    context.strokeStyle = colors[i];
+    //} else {
+    //    context.strokeStyle = $('#cp2').colorpicker('getValue');
+    //}
     if (opacity[i] != null) {
         context.globalAlpha = opacity[i];
     } else {

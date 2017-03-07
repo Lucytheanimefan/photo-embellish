@@ -42,8 +42,7 @@ def create_files():
 	min_css=minify_text("static/css/style.css", "css")
 	min_js = js_values + minify_text("static/js/user.js", "js")+"animate();"
 	data = {"css":min_css, "js":min_js}
-	#print "data to return: "
-	#print data
+	print "should be returning in create_files"
 	return jsonify(result=data)
 
 @app.route("/record_values", methods=["POST"])

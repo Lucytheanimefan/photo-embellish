@@ -33,6 +33,19 @@
                             </li>
                             <li><a onclick="clearCanvas(true)">Clear</a></li>
                             <li><a id="animate"><i class="fa fa-play" aria-hidden="true"></i><br>Animate</a></li>
+                            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Animation Effects</i><span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a>
+                                            <div id = "simult" class="checkbox">
+                                                <label>
+                                                    <input onclick = "simultaneousOptions()" type="checkbox" id = "simultaneous" value="1">Simultaneous</label>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    
+                                </ul>
+                            </li>
                             <li><a><i id="zoomIn" class="fa fa-plus" aria-hidden="false"></i></a></li>
                             <li><a><i id="zoomOut" class="fa fa-minus" aria-hidden="false"></i></a></li>
                             <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-paint-brush" aria-hidden="true"></i><span class="caret"></span></a>

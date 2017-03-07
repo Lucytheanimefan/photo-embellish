@@ -109,19 +109,6 @@ function updateFiles() {
         }
     });
 }
-/*
-function saveTextFromPage() {
-    $.get("/js.txt", function(data) {
-        zip.file("script.js", data);
-        $.get("/css.txt", function(data) {
-            zip.file("style.css", data);
-            zip.generateAsync({ type: "blob" })
-                .then(function(blob) {
-                    saveAs(blob, "photo-embellish.zip");
-                });
-        });
-    });
-}*/
 
 var currentZoom = 1;
 $("#zoomIn").click(function() {
