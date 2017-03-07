@@ -32,16 +32,19 @@ def code_file(file):
     #do your code here
     return send_from_directory(app.static_folder, file)
 
-@app.route('/create_files', methods=['POST'])
+@app.route('/create_files', methods=['GET'])
 def create_files():
 	print "CREATE FILES"
 	print "js_values? in createfiles"
-	print js_values
+	#print js_values
 	#css_files = glob.glob("static/css/*.css")
 	#js_files = glob.glob("static/js/*.js")
-	min_css=write_to_file(minify_text("static/css/style.css", "css"),"css")
-	min_js = write_to_file(js_values + minify_text("static/js/user.js", "js")+"animate();","js")
-	return "done :)"
+	min_css=minify_text("static/css/style.css", "css")
+	min_js = js_values + minify_text("static/js/user.js", "js")+"animate();"
+	data = {"css":min_css, "js":min_js}
+	print "data to return: "
+	print data
+	return jsonify(result=data)
 
 @app.route("/record_values", methods=["POST"])
 def record_values():
@@ -50,7 +53,7 @@ def record_values():
 	#print dat
 	set_js_values(dat)
 	print "js values in record values"
-	print js_values
+	#print js_values
 	return "Done"
 
 def set_js_values(vals):

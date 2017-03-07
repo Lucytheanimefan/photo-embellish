@@ -3,7 +3,7 @@
  */
 
 
-var context = document.getElementById('myCanvas').getContext("2d");
+var context = document.getElementById('myCanvas').getContext('2d');
 
 var requestAnimationFrame = window.requestAnimationFrame ||
     window.mozRequestAnimationFrame ||
@@ -20,7 +20,7 @@ function setLine(i) {
     if (opacity[i] != null) {
         context.globalAlpha = opacity[i];
     } else {
-        context.globalAlpha = parseFloat($("#opacity").val());
+        context.globalAlpha = parseFloat($('#opacity').val());
     }
     context.beginPath();
     if (clickDrag[i] && i) {
@@ -36,7 +36,7 @@ function setLine(i) {
 
 function redraw() {
     context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
-    context.lineJoin = "round";
+    context.lineJoin = 'round';
 
     for (var i = 0; i < clickX.length; i++) {
         setLine(i);

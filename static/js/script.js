@@ -53,14 +53,63 @@ function download(filename, text) {
 }
 var zip;
 
-function downloadZip() {
-    sendData();
+function downloadZip(data) {
     zip = new JSZip();
     zip.file("index.html", generateHTML());
-    saveTextFromPage();
+    zip.file("script.js", data["js"]);
+    zip.file("style.css", data["css"]);
+    zip.generateAsync({ type: "blob" })
+        .then(function(blob) {
+            saveAs(blob, "photo-embellish.zip");
+        });
+}
+
+function sendData() {
+    var clickXString = "clickX = [" + clickX.toString() + "];";
+    var clickYString = "clickY = [" + clickY.toString() + "];";
+    var clickDragString = "clickDrag = [" + clickDrag.toString() + "];";
+    var colorsString = "colors = ['" + colors.join("','") + "'];";
+    var strokeWidthString = "strokeWidth = [" + strokeWidth.toString() + "];";
+    var opacityString = "opacity = [" + opacity.toString() + "];";
+
+    $.ajax({
+        type: 'POST',
+        url: '/record_values',
+        data: clickXString + clickYString + clickDragString + colorsString + strokeWidthString + opacityString,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'text',
+        success: function(msg, status, jqXHR) {
+            console.log(msg);
+            updateFiles();
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert(textStatus, errorThrown);
+        }
+    });
 
 }
 
+function updateFiles() {
+    $.ajax({
+        type: 'GET',
+        url: '/create_files',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'text',
+        success: function(response, status, jqXHR) {
+            var json = JSON.stringify(eval("(" + response + ")"));
+            console.log(json)
+            var data = JSON.parse(response);
+            data = response["result"];
+            console.log(data);
+            downloadZip(data);
+
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert(textStatus, errorThrown);
+        }
+    });
+}
+/*
 function saveTextFromPage() {
     $.get("/js.txt", function(data) {
         zip.file("script.js", data);
@@ -72,7 +121,8 @@ function saveTextFromPage() {
                 });
         });
     });
-}
+}*/
+
 var currentZoom = 1;
 $("#zoomIn").click(function() {
     currentZoom += 0.1;
