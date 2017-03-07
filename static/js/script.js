@@ -19,7 +19,7 @@ $("#fileChooser").change(function(e) {
             canvas.height = $("#myImage").height();
             myImage = new Image($("#myImage").width(), $("#myImage").height());
             myImage.src = reader.result;
-            myImage.id = 'htmlImage'
+            myImage.id = 'myImage'
 
         }
         reader.readAsDataURL(file);
