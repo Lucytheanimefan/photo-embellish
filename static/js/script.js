@@ -71,11 +71,13 @@ function sendData() {
     var colorsString = "colors = ['" + colors.join("','") + "'];";
     var strokeWidthString = "strokeWidth = [" + strokeWidth.toString() + "];";
     var opacityString = "opacity = [" + opacity.toString() + "];";
+    var simultaneousAnimString = "simultaneousAnim = "+JSON.stringify(simultaneousAnim)+";";
+    var used_animationsString = "used_animations = ["+used_animations.toString()+"];";
 
     $.ajax({
         type: 'POST',
         url: '/record_values',
-        data: clickXString + clickYString + clickDragString + colorsString + strokeWidthString + opacityString,
+        data: clickXString + clickYString + clickDragString + colorsString + strokeWidthString + opacityString + simultaneousAnimString + used_animationsString,
         contentType: 'application/json; charset=utf-8',
         dataType: 'text',
         success: function(msg, status, jqXHR) {

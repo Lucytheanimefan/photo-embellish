@@ -7,7 +7,9 @@ var strokeWidth = new Array();
 var opacity = new Array();
 var simultaneousAnim = {};
 var paint;
+var used_animations = new Array();
 var currentAnim = null;
+var currentAnim_count = null;
 
 var simultaneous = $('#simultaneous').prop('checked');
 colors.push($('#cp2').colorpicker('getValue'));
@@ -25,6 +27,8 @@ function simultaneousOptions() {
     if ($('#simultaneous').prop('checked')) {
         console.log("INSERT AFTER");
         $("#simult").append('<label for = "simult_anim_num">Number of simultaneous animations<input class="form-control" id="simult_anim_num" value="0" placeholder="Number of simultaneous animations" type="number" min="0" step="1" /></label>');
+    } else {
+        $("label[for='simult_anim_num']").remove();
     }
     detectChange("#simult_anim_num", function(data) {
         $(".simult_anim").remove();
@@ -42,10 +46,10 @@ function currentAnimation(divCount) {
     console.log("currentAnimation clicked");
     if ($(id).prop('checked')) {
         $(".simult_an_box:not(" + id + ")").attr("disabled", "");
-
+        currentAnim_count = divCount;
         currentAnim = "animation_" + divCount;
-        simultaneousAnim[currentAnim] = { "clickX": [], "clickY": [], "colors": [], "strokeWidth": [], "opacity": [], "clickDrag": [] };
-
+        used_animations.push(currentAnim_count);
+        simultaneousAnim[currentAnim] = { "clickX": [], "clickY": [], "colors": [], "strokeWidth": [], "opacity": [], "clickDrag": [] }
     } else {
         $(".simult_an_box").removeAttr("disabled");
         currentAnim = null;
@@ -94,7 +98,9 @@ $('#myCanvas').mousedown(function(e) {
     addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
     redraw();
     if (currentAnim != null) {
-        redraw(0);
+        for (var val in used_animations) {
+            redraw(val);
+        }
     }
 });
 
@@ -105,7 +111,9 @@ $('#myCanvas').mousemove(function(e) {
         addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
         redraw();
         if (currentAnim != null) {
-            redraw(0);
+            for (var val in used_animations) {
+                redraw(val);
+            }
         }
     }
 });
@@ -125,10 +133,10 @@ $('#myCanvas').mouseleave(function(e) {
  * @param {[type]} i        [description]
  * @param {Number} anim_num [description]
  */
-function setLine(i, anim_num = 1) {
+function setLine(i, anim_num = -1) {
     var j = anim_num;
     var currentAnim = "animation_" + j;
-    if (j != 1) {
+    if (j != -1) {
         context.lineWidth = simultaneousAnim[currentAnim]["strokeWidth"][i];
         if (simultaneousAnim[currentAnim]["colors"][i] != null) {
             context.strokeStyle = simultaneousAnim[currentAnim]["colors"][i]; // window["colors" + j][i];
@@ -175,13 +183,13 @@ function setLine(i, anim_num = 1) {
 }
 
 
-function redraw(anim_count = 1) {
+function redraw(anim_count = -1) {
     var j = anim_count;
     var currentAnim = "animation_" + j;
     context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
     context.lineJoin = "round";
 
-    if (j == 1) {
+    if (j == -1) {
 
         for (var i = 0; i < clickX.length; i++) {
             setLine(i);
@@ -211,19 +219,25 @@ function clearCanvas(reset = false) {
 function animate() {
     clearCanvas();
     animateLines();
-    animateLines(0);
+    console.log("Used animations: ");
+    console.log(used_animations);
+    for (var val in used_animations) {
+        console.log(val);
+        animateLines(val);
+    }
+
 }
 
 var lineCount = 1;
 
-function animateLines(anim_count = 1) {
+function animateLines(anim_count = -1) {
     var j = anim_count;
     var currentAnim = "animation_" + j;
     i = lineCount;
     setLine(i, anim_count);
     lineCount += 1;
 
-    if (anim_count == 1) {
+    if (anim_count == -1) {
 
         if (i > clickX.length) {
             cancelAnimationFrame(requestID);
@@ -234,9 +248,9 @@ function animateLines(anim_count = 1) {
         }
     } else {
         if (i > simultaneousAnim[currentAnim]["clickX"].length) {
-            cancelAnimationFrame(window["requestID"+j]);
+            cancelAnimationFrame(window["requestID" + j]);
         } else {
-            window["requestID"+j] = requestAnimationFrame(function() {
+            window["requestID" + j] = requestAnimationFrame(function() {
                 animateLines(anim_count);
             });
         }

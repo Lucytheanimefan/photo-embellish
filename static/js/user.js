@@ -4,50 +4,91 @@
 
 
 var context = document.getElementById('myCanvas').getContext('2d');
+var currentAnim = null;
+var currentAnim_count = null;
 
 var requestAnimationFrame = window.requestAnimationFrame ||
     window.mozRequestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
     window.msRequestAnimationFrame;
 
-function setLine(i) {
-    context.lineWidth = strokeWidth[i];
-    //if (colors[i] != null) {
-    context.strokeStyle = colors[i];
-    //} else {
-    //    context.strokeStyle = $('#cp2').colorpicker('getValue');
-    //}
-    if (opacity[i] != null) {
-        context.globalAlpha = opacity[i];
+function setLine(i, anim_num = -1) {
+    var j = anim_num;
+    var currentAnim = "animation_" + j;
+    if (j != -1) {
+        context.lineWidth = simultaneousAnim[currentAnim]["strokeWidth"][i];
+        if (simultaneousAnim[currentAnim]["colors"][i] != null) {
+            context.strokeStyle = simultaneousAnim[currentAnim]["colors"][i]; // window["colors" + j][i];
+        } else {
+            context.strokeStyle = $('#cp2').colorpicker('getValue');
+        }
+        if (simultaneousAnim[currentAnim]["opacity"][i] != null) {
+            context.globalAlpha = simultaneousAnim[currentAnim]["opacity"][i];
+        } else {
+            context.globalAlpha = parseFloat($("#opacity").val());
+        }
+        context.beginPath();
+        if (clickDrag[i] && i) {
+            context.moveTo(simultaneousAnim[currentAnim]["clickX"][i - 1], simultaneousAnim[currentAnim]["clickY"][i - 1]);
+        } else {
+            context.moveTo(simultaneousAnim[currentAnim]["clickX"][i] - 1, simultaneousAnim[currentAnim]["clickY"][i]);
+        }
+        context.lineTo(simultaneousAnim[currentAnim]["clickX"][i], simultaneousAnim[currentAnim]["clickY"][i]);
+        context.closePath();
+        context.stroke();
+
     } else {
-        context.globalAlpha = parseFloat($('#opacity').val());
+        context.lineWidth = strokeWidth[i];
+        if (colors[i] != null) {
+            context.strokeStyle = colors[i];
+        } else {
+            context.strokeStyle = $('#cp2').colorpicker('getValue');
+        }
+        if (opacity[i] != null) {
+            context.globalAlpha = opacity[i];
+        } else {
+            context.globalAlpha = parseFloat($("#opacity").val());
+        }
+        context.beginPath();
+        if (clickDrag[i] && i) {
+            context.moveTo(clickX[i - 1], clickY[i - 1]);
+        } else {
+            context.moveTo(clickX[i] - 1, clickY[i]);
+        }
+        context.lineTo(clickX[i], clickY[i]);
+        context.closePath();
+        context.stroke();
     }
-    context.beginPath();
-    if (clickDrag[i] && i) {
-        context.moveTo(clickX[i - 1], clickY[i - 1]);
-    } else {
-        context.moveTo(clickX[i] - 1, clickY[i]);
-    }
-    context.lineTo(clickX[i], clickY[i]);
-    context.closePath();
-    context.stroke();
 }
 
 
-function redraw() {
+function redraw(anim_count = -1) {
+    var j = anim_count;
+    var currentAnim = "animation_" + j;
     context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
-    context.lineJoin = 'round';
+    context.lineJoin = "round";
 
-    for (var i = 0; i < clickX.length; i++) {
-        setLine(i);
+    if (j == -1) {
+
+        for (var i = 0; i < clickX.length; i++) {
+            setLine(i);
+        }
+    } else {
+        for (var i = 0; i < simultaneousAnim[currentAnim]["clickX"].length; i++) {
+            setLine(i, j);
+        }
     }
 }
 
-function clearCanvas(reset) {
+function clearCanvas(reset = false) {
     if (reset) {
         clickX = new Array();
         clickY = new Array();
         clickDrag = new Array();
+        colors = new Array();
+        strokeWidth = new Array();
+        opacity = new Array();
+        //simultaneous = new Array();
     }
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
@@ -55,21 +96,40 @@ function clearCanvas(reset) {
 
 
 function animate() {
-    clearCanvas(false);
+    clearCanvas();
     animateLines();
+    for (var val in used_animations) {
+        animateLines(val);
+    }
+
 }
 
 var lineCount = 1;
 
-function animateLines() {
+function animateLines(anim_count = -1) {
+    var j = anim_count;
+    var currentAnim = "animation_" + j;
     i = lineCount;
-    setLine(i);
+    setLine(i, anim_count);
     lineCount += 1;
 
-    if (i > clickX.length) {
-        cancelAnimationFrame(requestID);
+    if (anim_count == -1) {
+
+        if (i > clickX.length) {
+            cancelAnimationFrame(requestID);
+        } else {
+            requestID = requestAnimationFrame(function() {
+                animateLines(anim_count);
+            });
+        }
     } else {
-        requestID = requestAnimationFrame(animateLines);
+        if (i > simultaneousAnim[currentAnim]["clickX"].length) {
+            cancelAnimationFrame(window["requestID" + j]);
+        } else {
+            window["requestID" + j] = requestAnimationFrame(function() {
+                animateLines(anim_count);
+            });
+        }
     }
 }
 
