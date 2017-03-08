@@ -27,7 +27,10 @@
                             <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">File<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <input id="fileChooser" type="file">
+                                        <a>
+                                            <input type="file" name="file" id="fileChooser" class="inputfile" />
+                                            <label for="fileChooser">Choose a file</label>
+                                        </a>
                                     </li>
                                 </ul>
                             </li>
@@ -37,13 +40,12 @@
                                 <ul class="dropdown-menu">
                                     <li>
                                         <a>
-                                            <div id = "simult" class="checkbox">
+                                            <div id="simult" class="checkbox">
                                                 <label>
-                                                    <input onclick = "simultaneousOptions()" type="checkbox" id = "simultaneous" value="1">Simultaneous</label>
+                                                    <input onclick="simultaneousOptions()" type="checkbox" id="simultaneous" value="1">Simultaneous</label>
                                             </div>
                                         </a>
                                     </li>
-                                    
                                 </ul>
                             </li>
                             <li><a><i id="zoomIn" class="fa fa-plus fa-lg" aria-hidden="false"></i></a></li>
