@@ -48,11 +48,9 @@ def create_files():
 @app.route("/record_values", methods=["POST"])
 def record_values():
 	dat = request.data
-	#print "THIS IS THE DATA"
-	#print dat
 	set_js_values(dat)
 	print "js values in record values"
-	#print js_values
+	print js_values
 	return "Done"
 
 def set_js_values(vals):

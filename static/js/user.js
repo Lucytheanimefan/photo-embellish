@@ -17,11 +17,11 @@ function setLine(i, anim_num = -1) {
     var currentAnim = "animation_" + j;
     if (j != -1) {
         context.lineWidth = simultaneousAnim[currentAnim]["strokeWidth"][i];
-        if (simultaneousAnim[currentAnim]["colors"][i] != null) {
+        //if (simultaneousAnim[currentAnim]["colors"][i] != null) {
             context.strokeStyle = simultaneousAnim[currentAnim]["colors"][i]; // window["colors" + j][i];
-        } else {
-            context.strokeStyle = $('#cp2').colorpicker('getValue');
-        }
+        //} else {
+            //context.strokeStyle = $('#cp2').colorpicker('getValue');
+        //}
         if (simultaneousAnim[currentAnim]["opacity"][i] != null) {
             context.globalAlpha = simultaneousAnim[currentAnim]["opacity"][i];
         } else {
