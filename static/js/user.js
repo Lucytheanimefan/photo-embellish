@@ -17,11 +17,7 @@ function setLine(i, anim_num = -1) {
     var currentAnim = "animation_" + j;
     if (j != -1) {
         context.lineWidth = simultaneousAnim[currentAnim]["strokeWidth"][i];
-        //if (simultaneousAnim[currentAnim]["colors"][i] != null) {
-            context.strokeStyle = simultaneousAnim[currentAnim]["colors"][i]; // window["colors" + j][i];
-        //} else {
-            //context.strokeStyle = $('#cp2').colorpicker('getValue');
-        //}
+        context.strokeStyle = simultaneousAnim[currentAnim]["colors"][i]; 
         if (simultaneousAnim[currentAnim]["opacity"][i] != null) {
             context.globalAlpha = simultaneousAnim[currentAnim]["opacity"][i];
         } else {
@@ -39,11 +35,8 @@ function setLine(i, anim_num = -1) {
 
     } else {
         context.lineWidth = strokeWidth[i];
-        if (colors[i] != null) {
-            context.strokeStyle = colors[i];
-        } else {
-            context.strokeStyle = $('#cp2').colorpicker('getValue');
-        }
+        //if (colors[i] != null) {
+        context.strokeStyle = colors[i];
         if (opacity[i] != null) {
             context.globalAlpha = opacity[i];
         } else {
