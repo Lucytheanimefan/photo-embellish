@@ -43,7 +43,7 @@ def create_files():
 	data = {"css":min_css, "js":min_js}
 	print "should be returning in create_files"
 	return jsonify(result=data)
-
+'''
 @app.route("/record_values", methods=["POST"])
 def record_values():
 	dat = request.data
@@ -52,15 +52,18 @@ def record_values():
 	print js_values
 	return "Done"
 
+
 def set_js_values(vals):
 	global js_values
 	js_values = vals;
-	
+
+
 def write_to_file(content, file_name):
 	print "CONTENT WRITTEN TO FILE: "
 	print content
 	with open("static/"+file_name+".txt", "w+") as text_file:
 		text_file.write(content)
+'''
 
 @app.route("/minify", methods=["GET","POST"])
 def minify_stuff():

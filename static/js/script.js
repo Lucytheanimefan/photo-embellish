@@ -29,9 +29,6 @@ $("#fileChooser").change(function(e) {
     }
 });
 
-function downloadHTML() {
-    download("index.html", generateHTML());
-}
 
 function generateHTML() {
     var header = '<head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Photo Embellisher</title><link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"><link rel=stylesheet type=text/css href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"}}"><link rel=stylesheet type=text/css href="style.css" }}"></head>';
@@ -41,18 +38,6 @@ function generateHTML() {
     return html;
 }
 
-function download(filename, text) {
-    var element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-    element.setAttribute('download', filename);
-
-    element.style.display = 'none';
-    document.body.appendChild(element);
-
-    element.click();
-
-    document.body.removeChild(element);
-}
 var zip = new JSZip();
 
 function downloadZip(data = null) {
@@ -81,25 +66,6 @@ function sendData() {
             downloadZip();
         });
     });
-
-    //getJS(allVars);
-
-    /*
-        $.ajax({
-            type: 'POST',
-            url: '/record_values',
-            data: clickXString + clickYString + clickDragString + colorsString + strokeWidthString + opacityString + simultaneousAnimString + used_animationsString,
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'text',
-            success: function(msg, status, jqXHR) {
-                console.log(msg);
-                updateFiles();
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                alert(textStatus, errorThrown);
-            }
-        });
-        */
 }
 
 
@@ -138,28 +104,6 @@ function getCode(file_type = "js", variables = "", callback = null) {
 
 }
 
-/*
-function updateFiles() {
-    $.ajax({
-        type: 'GET',
-        url: '/create_files',
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'text',
-        success: function(response, status, jqXHR) {
-            var json = JSON.stringify(eval("(" + response + ")"));
-            console.log(json)
-            var data = eval("(" + json + ")");
-            data = data["result"];
-            console.log(data);
-            downloadZip(data);
-
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            alert(textStatus, errorThrown);
-        }
-    });
-}
-*/
 
 var currentZoom = 1;
 $("#zoomIn").click(function() {
