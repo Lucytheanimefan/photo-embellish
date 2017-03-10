@@ -36,9 +36,9 @@ def code_file(file):
 def create_files():
 	print "CREATE FILES"
 	print "js_values? in createfiles"
-	min_css=minify_text("static/css/style.css", "css")
+	min_css=minify_text("/static/css/style.css", "css")
 	print "----finished minifying min_css-------"
-	min_js = js_values + minify_text("static/js/user.js", "js")+"animate();"
+	min_js = js_values + minify_text("/static/js/user.js", "js")+"animate();"
 	"----finished minifying min_js-------"
 	data = {"css":min_css, "js":min_js}
 	print "should be returning in create_files"
@@ -66,7 +66,7 @@ def minify_text(filepath, file_type):
 	print "in minify_text"
 	url = os.path.realpath('.')
 	print(SITE_URL+filepath)
-	text = requests.get(SITE_URL+filepath).content
+	text = requests.get(filepath).content
 	print text
 	if file_type is "js":
 		minified = minify(text)
