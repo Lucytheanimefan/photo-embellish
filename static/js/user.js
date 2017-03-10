@@ -12,12 +12,16 @@ var requestAnimationFrame = window.requestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
     window.msRequestAnimationFrame;
 
+var canvas = document.getElementById("myCanvas");
+canvas.width = $("#myImage").width();
+canvas.height = $("#myImage").height();
+
 function setLine(i, anim_num) {
     var j = anim_num;
     var currentAnim = "animation_" + j;
     if (j != -1) {
         context.lineWidth = simultaneousAnim[currentAnim]["strokeWidth"][i];
-        context.strokeStyle = simultaneousAnim[currentAnim]["colors"][i]; 
+        context.strokeStyle = simultaneousAnim[currentAnim]["colors"][i];
         if (simultaneousAnim[currentAnim]["opacity"][i] != null) {
             context.globalAlpha = simultaneousAnim[currentAnim]["opacity"][i];
         } else {
