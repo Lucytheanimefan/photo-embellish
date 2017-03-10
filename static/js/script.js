@@ -1,5 +1,5 @@
 var BASE_URL = "https://photo-embellish.herokuapp.com"
-
+var blank_img_size = 400;
 //get uploaded photo
 $("#fileChooser").change(function(e) {
     console.log(e.originalEvent.srcElement.files[0]);
@@ -30,6 +30,18 @@ $("#fileChooser").change(function(e) {
 });
 
 
+
+function createBlankProject() {
+    $("#myImage").remove();
+    var myImage = new Image(blank_img_size, blank_img_size);
+    myImage.src = '/static/img/blank.png';
+    myImage.id = "myImage";
+    var canvas = document.getElementById("myCanvas");
+    canvas.width = blank_img_size;
+    canvas.height = blank_img_size;
+    $(".navbar").after(myImage);
+}
+
 function generateHTML() {
     var header = '<head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Photo Embellisher</title><link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"><link rel=stylesheet type=text/css href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"}}"><link rel=stylesheet type=text/css href="style.css" }}"></head>';
     var footer = '<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script><script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" }}"></script><script type="text/javascript" src="script.js" }}"></script>';
@@ -42,7 +54,7 @@ var zip = new JSZip();
 
 function downloadZip(data = null) {
     zip.file("index.html", generateHTML());
-    
+
     zip.generateAsync({ type: "blob" })
         .then(function(blob) {
             console.log("Saving as zip");
@@ -62,7 +74,7 @@ function sendData() {
 
     var allVars = clickXString + clickYString + clickDragString + colorsString + strokeWidthString + opacityString + simultaneousAnimString + used_animationsString;
     getCode("js", allVars, function() {
-        getCode("css", "" ,function() {
+        getCode("css", "", function() {
             downloadZip();
         });
     });
@@ -76,8 +88,8 @@ function getCode(file_type = "js", variables = "", callback = null) {
     $.get(filepath, function(data) {
         console.log(data);
         var code = variables + data;
-        var dat = { };
-        dat[file_type]= code;
+        var dat = {};
+        dat[file_type] = code;
         console.log(dat);
         $.ajax({
             type: 'POST',
