@@ -62,6 +62,24 @@ def write_to_file(content, file_name):
 	with open("static/"+file_name+".txt", "w+") as text_file:
 		text_file.write(content)
 
+@app.route("/minify", methods=["GET","POST"])
+def minify_stuff():
+	print "in /minify!"
+	dat = request.json
+	print dat
+	minifiedjs = ""
+	minifiedcss = ""
+	if 'js' in dat:
+		minifiedjs = minify(dat['js'])
+	if 'css' in dat:
+		minifiedcss = compress(dat['css'])
+	toRet={"js":minifiedjs,"css":minifiedcss}
+	print 'RETURN IN MINIFY: '
+	print toRet
+	return jsonify(result=toRet)
+
+
+
 def minify_text(filepath, file_type):
 	print "in minify_text"
 	url = os.path.realpath('.')

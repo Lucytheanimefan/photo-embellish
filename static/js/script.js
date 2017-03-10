@@ -1,3 +1,5 @@
+var BASE_URL = "https://photo-embellish.herokuapp.com"
+
 //get uploaded photo
 $("#fileChooser").change(function(e) {
     console.log(e.originalEvent.srcElement.files[0]);
@@ -56,7 +58,7 @@ var zip;
 function downloadZip(data) {
     zip = new JSZip();
     zip.file("index.html", generateHTML());
-    zip.file("script.js", data["js"]);
+    //zip.file("script.js", data["js"]);
     zip.file("style.css", data["css"]);
     zip.generateAsync({ type: "blob" })
         .then(function(blob) {
@@ -71,22 +73,55 @@ function sendData() {
     var colorsString = "colors = ['" + colors.join("','") + "'];";
     var strokeWidthString = "strokeWidth = [" + strokeWidth.toString() + "];";
     var opacityString = "opacity = [" + opacity.toString() + "];";
-    var simultaneousAnimString = "simultaneousAnim = "+JSON.stringify(simultaneousAnim)+";";
-    var used_animationsString = "used_animations = ["+used_animations.toString()+"];";
+    var simultaneousAnimString = "simultaneousAnim = " + JSON.stringify(simultaneousAnim) + ";";
+    var used_animationsString = "used_animations = [" + used_animations.toString() + "];";
 
-    $.ajax({
-        type: 'POST',
-        url: '/record_values',
-        data: clickXString + clickYString + clickDragString + colorsString + strokeWidthString + opacityString + simultaneousAnimString + used_animationsString,
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'text',
-        success: function(msg, status, jqXHR) {
-            console.log(msg);
-            updateFiles();
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            alert(textStatus, errorThrown);
-        }
+    var allVars = clickXString + clickYString + clickDragString + colorsString + strokeWidthString + opacityString + simultaneousAnimString + used_animationsString
+    getJS(allVars);
+
+    /*
+        $.ajax({
+            type: 'POST',
+            url: '/record_values',
+            data: clickXString + clickYString + clickDragString + colorsString + strokeWidthString + opacityString + simultaneousAnimString + used_animationsString,
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'text',
+            success: function(msg, status, jqXHR) {
+                console.log(msg);
+                updateFiles();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert(textStatus, errorThrown);
+            }
+        });
+        */
+}
+
+
+function getJS(variables = "") {
+    $.get("/static/js/user.js", function(data) {
+        var js = variables + data + "animate();";
+        var dat = { 'js': js }
+        $.ajax({
+            type: 'POST',
+            url: '/minify',
+            data: JSON.stringify(dat),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function(msg, status, jqXHR) {
+                var json = JSON.stringify(eval("(" + msg + ")"));
+                var data = eval("(" + json + ")");
+                data = data["result"];
+                console.log("getJS result")
+                console.log(data);
+                zip.file("script.js", data);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert(textStatus, errorThrown);
+            }
+        });
+
+
     });
 
 }

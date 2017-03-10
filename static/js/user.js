@@ -11,8 +11,9 @@ var requestAnimationFrame = window.requestAnimationFrame ||
     window.mozRequestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
     window.msRequestAnimationFrame;
+var negOne = -1;
 
-function setLine(i, anim_num = -1) {
+function setLine(i, anim_num = negOne) {
     var j = anim_num;
     var currentAnim = "animation_" + j;
     if (j != -1) {
@@ -55,7 +56,7 @@ function setLine(i, anim_num = -1) {
 }
 
 
-function redraw(anim_count = -1) {
+function redraw(anim_count = negOne) {
     var j = anim_count;
     var currentAnim = "animation_" + j;
     context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
@@ -99,7 +100,7 @@ function animate() {
 
 var lineCount = 1;
 
-function animateLines(anim_count = -1) {
+function animateLines(anim_count = negOne) {
     var j = anim_count;
     var currentAnim = "animation_" + j;
     i = lineCount;
