@@ -53,15 +53,14 @@ function download(filename, text) {
 
     document.body.removeChild(element);
 }
-var zip;
+var zip = new JSZip();
 
-function downloadZip(data) {
-    zip = new JSZip();
+function downloadZip(data = null) {
     zip.file("index.html", generateHTML());
-    //zip.file("script.js", data["js"]);
-    zip.file("style.css", data["css"]);
+    
     zip.generateAsync({ type: "blob" })
         .then(function(blob) {
+            console.log("Saving as zip");
             saveAs(blob, "photo-embellish.zip");
         });
 }
@@ -76,8 +75,14 @@ function sendData() {
     var simultaneousAnimString = "simultaneousAnim = " + JSON.stringify(simultaneousAnim) + ";";
     var used_animationsString = "used_animations = [" + used_animations.toString() + "];";
 
-    var allVars = clickXString + clickYString + clickDragString + colorsString + strokeWidthString + opacityString + simultaneousAnimString + used_animationsString
-    getJS(allVars);
+    var allVars = clickXString + clickYString + clickDragString + colorsString + strokeWidthString + opacityString + simultaneousAnimString + used_animationsString;
+    getCode("js", allVars, function() {
+        getCode("css", "" ,function() {
+            downloadZip();
+        });
+    });
+
+    //getJS(allVars);
 
     /*
         $.ajax({
@@ -98,10 +103,16 @@ function sendData() {
 }
 
 
-function getJS(variables = "") {
-    $.get("/static/js/user.js", function(data) {
-        var js = variables + data + "animate();";
-        var dat = { 'js': js }
+function getCode(file_type = "js", variables = "", callback = null) {
+    file_type == "js" ? filepath = "/static/js/user.js" : filepath = "/static/css/style.css";
+    file_type == "js" ? new_file = "script.js" : new_file = "style.css";
+    console.log("filepath: " + filepath);
+    $.get(filepath, function(data) {
+        console.log(data);
+        var code = variables + data;
+        var dat = { };
+        dat[file_type]= code;
+        console.log(dat);
         $.ajax({
             type: 'POST',
             url: '/minify',
@@ -109,23 +120,25 @@ function getJS(variables = "") {
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function(msg, status, jqXHR) {
-                var json = JSON.stringify(eval("(" + msg + ")"));
-                var data = eval("(" + json + ")");
-                data = data["result"];
-                console.log("getJS result")
+                console.log("msg: ");
+                console.log(msg);
+                data = msg["result"][file_type];
+                console.log("get result")
                 console.log(data);
-                zip.file("script.js", data);
+                zip.file(new_file, data);
+                if (callback) {
+                    callback();
+                }
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 alert(textStatus, errorThrown);
             }
         });
-
-
     });
 
 }
 
+/*
 function updateFiles() {
     $.ajax({
         type: 'GET',
@@ -146,6 +159,7 @@ function updateFiles() {
         }
     });
 }
+*/
 
 var currentZoom = 1;
 $("#zoomIn").click(function() {

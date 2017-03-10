@@ -11,9 +11,8 @@ var requestAnimationFrame = window.requestAnimationFrame ||
     window.mozRequestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
     window.msRequestAnimationFrame;
-var negOne = -1;
 
-function setLine(i, anim_num = negOne) {
+function setLine(i, anim_num) {
     var j = anim_num;
     var currentAnim = "animation_" + j;
     if (j != -1) {
@@ -56,7 +55,7 @@ function setLine(i, anim_num = negOne) {
 }
 
 
-function redraw(anim_count = negOne) {
+function redraw(anim_count) {
     var j = anim_count;
     var currentAnim = "animation_" + j;
     context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
@@ -65,7 +64,7 @@ function redraw(anim_count = negOne) {
     if (j == -1) {
 
         for (var i = 0; i < clickX.length; i++) {
-            setLine(i);
+            setLine(i, -1);
         }
     } else {
         for (var i = 0; i < simultaneousAnim[currentAnim]["clickX"].length; i++) {
@@ -74,7 +73,7 @@ function redraw(anim_count = negOne) {
     }
 }
 
-function clearCanvas(reset = false) {
+function clearCanvas(reset) {
     if (reset) {
         clickX = new Array();
         clickY = new Array();
@@ -90,8 +89,8 @@ function clearCanvas(reset = false) {
 
 
 function animate() {
-    clearCanvas();
-    animateLines();
+    clearCanvas(false);
+    animateLines(-1);
     for (var val in used_animations) {
         animateLines(val);
     }
@@ -100,7 +99,7 @@ function animate() {
 
 var lineCount = 1;
 
-function animateLines(anim_count = negOne) {
+function animateLines(anim_count) {
     var j = anim_count;
     var currentAnim = "animation_" + j;
     i = lineCount;
