@@ -36,9 +36,9 @@ def code_file(file):
 def create_files():
 	print "CREATE FILES"
 	print "js_values? in createfiles"
-	min_css=minify_text("/static/css/style.css", "css")
+	min_css=minify_text("static/css/style.css", "css")
 	print "----finished minifying min_css-------"
-	min_js = js_values + minify_text("/static/js/user.js", "js")+"animate();"
+	min_js = js_values + minify_text("static/js/user.js", "js")+"animate();"
 	"----finished minifying min_js-------"
 	data = {"css":min_css, "js":min_js}
 	print "should be returning in create_files"
