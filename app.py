@@ -32,15 +32,14 @@ def code_file(file):
     #do your code here
     return send_from_directory(app.static_folder, file)
 
-@app.route('/create_files', methods=['GET'])
+@app.route('/create_files', methods=['GET','POST'])
 def create_files():
 	print "CREATE FILES"
 	print "js_values? in createfiles"
-	#print js_values
-	#css_files = glob.glob("static/css/*.css")
-	#js_files = glob.glob("static/js/*.js")
 	min_css=minify_text("static/css/style.css", "css")
+	print "----finished minifying min_css-------"
 	min_js = js_values + minify_text("static/js/user.js", "js")+"animate();"
+	"----finished minifying min_js-------"
 	data = {"css":min_css, "js":min_js}
 	print "should be returning in create_files"
 	return jsonify(result=data)
