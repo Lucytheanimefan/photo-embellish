@@ -15,6 +15,7 @@
 </head>
 
 <body>
+
     <body>
         <div class="container-fluid">
             <nav class="navbar navbar-default">
@@ -24,19 +25,39 @@
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
                             <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">File<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
+                                <ul class="dropdown-menu" role="menu">
                                     <li>
                                         <a>
                                             <input type="file" name="file" id="fileChooser" class="inputfile" />
                                             <label for="fileChooser">Choose a file</label>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a onclick="createBlankProject()">
-                                            Create blank project
-                                        </a>
+                                    <!--
+                                    <li><a onclick = "blankProjectOptions()">Create a blank project</a>
+                                        <li id = "blankProjSettings">
+                                            <label for="width">Width</label>
+                                            <input class="form-control" id="width" value="400" placeholder="opacity" type="number" min="1" step="1" />
+                                            <label for="height">Height</label>
+                                            <input class="form-control" id="height" value="400" placeholder="opacity" type="number" min="1" step="1" />
+                                            <button id="createBlankProject" type="btn">Create</button>
+                                        </li>
+                                    </li>-->
+                                    <li class="dropdown-submenu">
+                                        <a class="test" tabindex="-1" href="#">New dropdown <span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a tabindex="-1" href="#">2nd level dropdown</a></li>
+                                            <li><a tabindex="-1" href="#">2nd level dropdown</a></li>
+                                            <li class="dropdown-submenu">
+                                                <a class="test" href="#">Another dropdown <span class="caret"></span></a>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="#">3rd level dropdown</a></li>
+                                                    <li><a href="#">3rd level dropdown</a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
                                     </li>
                                 </ul>
+                            </li>
                             </li>
                             <li><a onclick="clearCanvas(true)">Clear</a></li>
                             <li><a id="animate">Animate <i class="fa fa-play fa-lg" aria-hidden="true"></i></a></li>

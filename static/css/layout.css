@@ -2,6 +2,10 @@ body{
 	background-color: #2B2B2B;
 }
 
+#blankProjSettings{
+    display: none;
+}
+
 .inputfile {
 	width: 0.1px;
 	height: 0.1px;

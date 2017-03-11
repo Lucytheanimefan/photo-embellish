@@ -2,7 +2,6 @@ var BASE_URL = "https://photo-embellish.herokuapp.com"
 var blank_img_size = 400;
 //get uploaded photo
 $("#fileChooser").change(function(e) {
-    console.log(e.originalEvent.srcElement.files[0]);
     $("#myImage").remove();
 
     for (var i = 0; i < e.originalEvent.srcElement.files.length; i++) {
@@ -31,22 +30,37 @@ $("#fileChooser").change(function(e) {
 
 
 
-function createBlankProject() {
+function blankProjectOptions() {
+    $("#blankProjSettings").css("display","inline");
+    /*
+    $("#blankProj").after('<label for="width">Width</label>' +
+        '<input class="form-control" id="width" value="400" placeholder="opacity" type="number" min="1" step="1" />' + '<label for="height">Height</label>' +
+        '<input class="form-control" id="height" value="400" placeholder="opacity" type="number" min="1" step="1" />');
+        */
+
+}
+
+$("#createBlankProject").click(function() {
+    var width = $("#width").val();
+    var height = $("#height").val();
+    createBlankProject(width, height);
+})
+
+function createBlankProject(width = blank_img_size, height = blank_img_size) {
     $("#myImage").remove();
-    var myImage = new Image(blank_img_size, blank_img_size);
+    var myImage = new Image(width, height);
     myImage.src = '/static/img/blank.png';
     myImage.id = "myImage";
     var canvas = document.getElementById("myCanvas");
-    canvas.width = blank_img_size;
-    canvas.height = blank_img_size;
+    canvas.width = width;
+    canvas.height = height;
     $(".navbar").after(myImage);
 }
 
 function generateHTML() {
     var header = '<head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Photo Embellisher</title><link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"><link rel=stylesheet type=text/css href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"}}"><link rel=stylesheet type=text/css href="style.css" }}"></head>';
     var footer = '<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script><script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" }}"></script><script type="text/javascript" src="script.js" }}"></script>';
-    var html = header + "<body>" + myImage.outerHTML + "<canvas id='myCanvas'></body>" + footer + "</body>"; //NEED TO SET SIZE OF CANVAS!
-    //console.log(html);
+    var html = header + "<body>" + myImage.outerHTML + "<canvas id='myCanvas'></body>" + footer + "</body>";
     return html;
 }
 
