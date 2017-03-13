@@ -28,10 +28,38 @@ $("#fileChooser").change(function(e) {
     }
 });
 
+//side bar
+$(document).ready(function() {
+    var trigger = $('.hamburger'),
+        overlay = $('.overlay'),
+        isClosed = false;
 
+    trigger.click(function() {
+        hamburger_cross();
+    });
+
+    function hamburger_cross() {
+
+        if (isClosed == true) {
+            overlay.hide();
+            trigger.removeClass('is-open');
+            trigger.addClass('is-closed');
+            isClosed = false;
+        } else {
+            overlay.show();
+            trigger.removeClass('is-closed');
+            trigger.addClass('is-open');
+            isClosed = true;
+        }
+    }
+
+    $('[data-toggle="offcanvas"]').click(function() {
+        $('#wrapper').toggleClass('toggled');
+    });
+});
 
 function blankProjectOptions() {
-    $("#blankProjSettings").css("display","inline");
+    $("#blankProjSettings").css("display", "inline");
     /*
     $("#blankProj").after('<label for="width">Width</label>' +
         '<input class="form-control" id="width" value="400" placeholder="opacity" type="number" min="1" step="1" />' + '<label for="height">Height</label>' +
@@ -157,3 +185,14 @@ $(function() {
     $('#cp2').colorpicker();
     //console.log($('#cp2').colorpicker('getValue'));
 });
+
+/* ------------- Side nav bar -------------- */
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("main").style.marginLeft = "250px";
+}
+
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("main").style.marginLeft= "0";
+}
