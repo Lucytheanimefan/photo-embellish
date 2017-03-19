@@ -11,6 +11,8 @@ var used_animations = new Array();
 var currentAnim = null;
 var currentAnim_count = null;
 
+var onMouse = false;
+
 var simultaneous = $('#simultaneous').prop('checked');
 colors.push($('#cp2').colorpicker('getValue'));
 strokeWidth.push(parseInt($("#strokeWidth").val()));
@@ -92,22 +94,26 @@ function addClick(x, y, dragging, i = 1) {
  * @return {[type]}    [description]
  */
 $('#myCanvas').mousedown(function(e) {
-    var mouseX = e.pageX - this.offsetLeft;
-    var mouseY = e.pageY - this.offsetTop;
-    paint = true;
-    addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
-    redraw();
-    if (currentAnim != null) {
-        for (var val in used_animations) {
-            redraw(val);
+    if (!onMouse) {
+        var mouseX = e.pageX - this.offsetLeft;
+        var mouseY = e.pageY - this.offsetTop;
+        paint = true;
+        addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
+        redraw();
+        if (currentAnim != null) {
+            for (var val in used_animations) {
+                redraw(val);
+            }
         }
+    }else if(onMouse){
+
     }
 });
 
 
 //draw on canvas when user is pressing down
 $('#myCanvas').mousemove(function(e) {
-    if (paint) {
+    if (paint && !onMouse) {
         addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
         redraw();
         if (currentAnim != null) {
@@ -115,8 +121,11 @@ $('#myCanvas').mousemove(function(e) {
                 redraw(val);
             }
         }
+    } else if (onMouse) {
+
     }
 });
+
 
 //if marker is off paper
 $('#myCanvas').mouseup(function(e) {

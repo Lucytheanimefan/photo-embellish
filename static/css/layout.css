@@ -1,23 +1,22 @@
-body{
-	background-color: #2B2B2B;
+body {
+    background-color: #2B2B2B;
 }
 
-
-#blankProjSettings{
+#blankProjSettings {
     display: none;
 }
 
 .inputfile {
-	width: 0.1px;
-	height: 0.1px;
-	opacity: 0;
-	overflow: hidden;
-	position: absolute;
-	z-index: -1;
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
 }
 
-#fileChooser{
-	width: 100%;
+#fileChooser {
+    width: 100%;
 }
 
 .inputfile + label {
@@ -27,12 +26,13 @@ body{
 }
 
 .inputfile + label {
-	cursor: pointer; /* "hand" cursor */
+    cursor: pointer;
+    /* "hand" cursor */
 }
 
 .inputfile:focus + label {
-	outline: 1px dotted #000;
-	/*outline: -webkit-focus-ring-color auto 5px;*/
+    outline: 1px dotted #000;
+    /*outline: -webkit-focus-ring-color auto 5px;*/
 }
 
 .input-group-addon {}
@@ -42,7 +42,6 @@ body{
 #cp2 {
     width: 100%;
 }
-
 
 .colorpicker {
     width: 20%;
@@ -54,6 +53,7 @@ body{
 
 
 /* Tooltip text */
+
 .tooltiptext {
     visibility: hidden;
     width: 120px;
@@ -62,21 +62,22 @@ body{
     text-align: center;
     padding: 5px 0;
     border-radius: 6px;
- 
     /* Position the tooltip text - see examples below! */
     position: absolute;
     z-index: 1;
 }
 
+
 /* Show the tooltip text when you mouse over the tooltip container */
+
 .tooltip:hover .tooltiptext {
     visibility: visible;
 }
 
-li.a, li{
-	text-align: center;
+li.a,
+li {
+    text-align: center;
 }
-
 
 .dropdown-submenu {
     position: relative;
@@ -126,7 +127,31 @@ li.a, li{
     border-radius: 6px 0 6px 6px;
 }
 
+
 /*----side nav ----*/
+
+#tools:hover {
+    cursor: pointer;
+}
+
+.collapse {
+    cursor: pointer;
+    display: block;
+}
+
+.collapse + #animation {
+    display: none;
+    /* hide the checkboxes */
+}
+
+.collapse + #animation + .effects {
+    display: none;
+}
+
+.collapse + #animation:checked + .effects {
+    display: block;
+}
+
 .sidenav {
     height: 100%;
     width: 0;
@@ -134,22 +159,15 @@ li.a, li{
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: #111;
+    background-color: lightgrey;
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 60px;
+    text-align: center;
 }
 
-.sidenav a {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: block;
-    transition: 0.3s
-}
-
-.sidenav a:hover, .offcanvas a:focus{
+.sidenav a:hover,
+.offcanvas a:focus {
     color: #f1f1f1;
 }
 
@@ -167,6 +185,14 @@ li.a, li{
 }
 
 @media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
+    .sidenav {
+        padding-top: 15px;
+    }
+    .sidenav a {
+        font-size: 18px;
+    }
+}
+
+option:hover {
+    cursor: pointer;
 }

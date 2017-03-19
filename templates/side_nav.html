@@ -1,7 +1,16 @@
 <div id="mySidenav" class="sidenav">
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <a href="#">About</a>
-  <a href="#">Services</a>
-  <a href="#">Clients</a>
-  <a href="#">Contact</a>
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <label class="collapse" for="animation">Animation Effects</label>
+    <input id="animation" type="checkbox">
+    <div class="effects">
+        <div class="row">
+            <select class="form-control" multiple="multiple">
+                <optgroup label="Custom Effects">
+                    <option onclick="useEffect('breakGlass')" value="breakGlass">Break Glass</option>
+                    <option onclick="useEffect('waterRipple')" value="waterRipple">Water Ripple</option>
+                </optgroup>
+            </select>
+        </div>
+    </div>
+</div>
 </div>
