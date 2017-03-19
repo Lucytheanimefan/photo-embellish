@@ -27,8 +27,8 @@ function breakGlassHTML() {
         '<canvas id="draw-debug" style="display: none;"></canvas>' +
         '<div id="draw-picker"></div>' +
         '</div></div>');
-    var width = $("myImage").width() + "px";
-    var height = $("myImage").height() + "px";
+    var width = $("#myImage").width() + "px";
+    var height = $("#myImage").height() + "px";
     $(".bg-image").css({
         display: "block",
         position: "absolute",
@@ -41,6 +41,7 @@ function breakGlassHTML() {
         width: width,
         height: height
     });
+
     $(".wrapper").css({
         top: "0px",
         position: "absolute",
